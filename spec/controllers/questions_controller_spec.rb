@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   describe "GET #index" do
     it "populates an array of all questions" do
-      questions = FactoryBot.create_list(:question, 3)
+      questions = create_list(:question, 3)
 
       get :index
 
