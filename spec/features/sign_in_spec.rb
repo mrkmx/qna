@@ -5,7 +5,7 @@ feature 'User can sign in', %q{
   As an unauthenticated user
   I'd like to be able to sign in
 } do
-  given(:user) { User.create!(email: 'test@example.com', password: 'password') }
+  given(:user) { create(:user) }
 
   background { visit new_user_session_path }
 
