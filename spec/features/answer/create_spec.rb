@@ -10,10 +10,10 @@ feature 'User can give an answer', %q{
   given!(:question) { create(:question) }
 
   describe 'Authenticated user' do
-  background do
-    sign_in(user)
-    visit question_path(question)
-  end
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
     scenario 'Authenticated user create answer', js: true do
       fill_in 'Your answer', with: 'Answer text'
