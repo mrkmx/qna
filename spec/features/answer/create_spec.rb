@@ -10,10 +10,10 @@ feature 'User can give an answer', %q{
   given!(:question) { create(:question) }
 
   describe 'Authenticated user' do
-  background do
-    sign_in(user)
-    visit question_path(question)
-  end
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
     scenario 'Authenticated user create answer', js: true do
       fill_in 'Your answer', with: 'Answer text'
@@ -23,6 +23,16 @@ feature 'User can give an answer', %q{
       within '.answers' do
        expect(page).to have_content 'Answer text'
       end
+    end
+
+    scenario 'Answers the question with attached file', js: true do
+      fill_in 'Your answer', with: 'Answer text'
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      click_on 'Answer'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
     end
 
     scenario 'Authenticated user creates answer with errors', js: true do
