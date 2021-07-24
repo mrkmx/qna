@@ -11,4 +11,13 @@
     = f.label :files
     = f.file_field :files, multiple: true
   .field
+    h3 Links:
+    = f.fields_for :links do |l|
+      .field
+        = l.label :name, 'Link name'
+        = l.text_field :name
+      .field
+        = l.label :url
+        = l.text_field :url
+  .field
     = f.submit 'Ask'

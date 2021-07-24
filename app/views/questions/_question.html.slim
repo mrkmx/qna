@@ -9,6 +9,13 @@ div
         - if current_user&.is_author?(question)
           = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
+  - if question.links.present?
+    .links
+      h3 Links
+      ul
+        - question.links.each do |l|
+          li= link_to l.name, l.url
+
 - if current_user&.is_author?(question)
   p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
   p= link_to 'Delete question', question_path(question), method: :delete

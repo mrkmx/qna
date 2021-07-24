@@ -10,8 +10,17 @@
 = form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
   = f.label :body, 'Your answer'
   = f.text_area :body
+  
   = f.label :files
   = f.file_field :files, multiple: true
+  
+  h3 Links:
+  = f.fields_for :links do |l|
+    = l.label :name, 'Link name'
+    = l.text_field :name
+    = l.label :url
+    = l.text_field :url
+  
   = f.submit 'Answer'
 
 h3= 'Answers:'
