@@ -16,10 +16,9 @@
   
   h3 Links:
   = f.fields_for :links do |l|
-    = l.label :name, 'Link name'
-    = l.text_field :name
-    = l.label :url
-    = l.text_field :url
+    = render 'shared/link_fields', f: l
+  .add-fields
+    = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
   
   = f.submit 'Answer'
 

@@ -9,12 +9,7 @@
           - if current_user&.is_author?(answer)
             = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
-    - if answer.links.present?
-      .links
-        h3 Links
-        ul
-          - answer.links.each do |l|
-            li= link_to l.name, l.url
+    = render 'shared/links', resource: answer
 
     - if current_user&.is_author?(answer.question)
       - unless answer.best?

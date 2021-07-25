@@ -7,9 +7,10 @@ feature 'User can add links to question', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
+  given(:gist_url_1) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
+  given(:gist_url_2) { 'https://gist.github.com/mrkmx/061390253c116c8509933b3b411e36d3' }
 
-  scenario 'User adds link when asks question' do
+  scenario 'User adds links when asks question', js: true do
     sign_in(user)
     visit new_question_path
 
@@ -17,11 +18,19 @@ feature 'User can add links to question', %q{
     fill_in 'Body', with: 'text text text'
 
     fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Url', with: gist_url_1
+
+    click_on 'Add link'
+
+    within all('.link-group').last do
+      fill_in 'Link name', with: 'Second gist'
+      fill_in 'Url', with: gist_url_2
+    end
 
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'My gist', href: gist_url_1
+    expect(page).to have_link 'Second gist', href: gist_url_2
   end
 
 end

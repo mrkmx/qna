@@ -9,6 +9,7 @@ require("@rails/activestorage").start();
 require("channels");
 
 require("jquery");
+require("@nathanvda/cocoon");
 require("edit_answer");
 require("edit_question");
 
