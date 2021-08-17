@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 feature 'User can choose the best answer of his question' do
-  given(:question) { create(:question) }
+  given(:reward) { create(:reward, question: question) }
+  given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question) }
   given!(:best_answer) { create(:answer, question: question, body: 'Best', best: true) }
   given(:user) { create(:user) }
@@ -42,6 +43,19 @@ feature 'User can choose the best answer of his question' do
       within "#answer-#{answer.id}" do
         expect(page).to have_content "It's the best answer"
       end
+    end
+
+    scenario 'tries to see the list of the earned rewards', js: true do
+      sign_in(question.user)
+      visit question_path(question)
+  
+      # within "#answer-#{answer.id}" do
+      click_on 'Best answer'
+      # end
+  
+      visit rewards_path
+  
+      expect(page).to have_content 'New Reward'
     end
   end
 

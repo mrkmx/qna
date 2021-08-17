@@ -17,4 +17,7 @@
     .add-fields
       = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
   .field
+    h3 Reward:
+    = render 'shared/reward_fields', f: f
+  .field
     = f.submit 'Ask'

@@ -13,6 +13,5 @@ FactoryBot.define do
         create :link, linkable: question
       end
     end
-    
   end
 end
