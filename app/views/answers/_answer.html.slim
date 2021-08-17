@@ -28,4 +28,10 @@
     = f.label :files
     = f.file_field :files, multiple: true
 
+    h3 Links:
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .add-fields
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+
     = f.submit 'Save'

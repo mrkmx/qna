@@ -8,6 +8,7 @@ feature 'User can add links to answer', %q{
 
   given(:user) {create(:user)}
   given!(:question) {create(:question)}
+  given(:answer) { create(:answer) }
   given(:gist_url_1) {'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c'}
   given(:gist_url_2) {'https://gist.github.com/mrkmx/061390253c116c8509933b3b411e36d3'}
 
@@ -23,7 +24,7 @@ feature 'User can add links to answer', %q{
 
     click_on 'Add link'
 
-    within all('.link-group').last do
+    within all('.links-group').last do
       fill_in 'Link name', with: 'Second gist'
       fill_in 'Url', with: gist_url_2
     end
@@ -31,6 +32,32 @@ feature 'User can add links to answer', %q{
     click_on 'Answer'
 
     within '.answers' do
+      expect(page).to have_link 'My gist', href: gist_url_1
+      expect(page).to have_link 'Second gist', href: gist_url_2
+    end
+  end
+
+  scenario 'User adds links when edits his answer', js: true do
+    sign_in(answer.user)
+    visit question_path(answer.question)
+
+    click_on 'Edit'
+
+    within '.answers' do
+      click_on 'Add link'
+
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url_1
+
+      click_on 'Add link'
+
+      within all('.links-group').last do
+        fill_in 'Link name', with: 'Second gist'
+        fill_in 'Url', with: gist_url_2
+      end
+
+      click_on 'Save'
+
       expect(page).to have_link 'My gist', href: gist_url_1
       expect(page).to have_link 'Second gist', href: gist_url_2
     end
