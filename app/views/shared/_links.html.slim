@@ -5,6 +5,9 @@
       - resource.links.each do |l|
         li
           - if l.github_gist?
-            = javascript_include_tag "#{l.url}.js"
+            script src="#{l.url}.js"
+            div
+              | Source:&nbsp;
+              =link_to l.name, l.url
           - else
             li= link_to l.name, l.url
