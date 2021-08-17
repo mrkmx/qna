@@ -3,4 +3,8 @@
     h3 Links
     ul
       - resource.links.each do |l|
-        li= link_to l.name, l.url
+        li
+          - if l.github_gist?
+            = javascript_include_tag "#{l.url}.js"
+          - else
+            li= link_to l.name, l.url
