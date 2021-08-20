@@ -1,0 +1,13 @@
+- if resource.links.present?
+  .links
+    h3 Links
+    ul
+      - resource.links.each do |l|
+        li
+          - if l.github_gist?
+            script src="#{l.url}.js"
+            div
+              | Source:&nbsp;
+              =link_to l.name, l.url
+          - else
+            li= link_to l.name, l.url

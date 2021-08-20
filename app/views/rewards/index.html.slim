@@ -1,0 +1,14 @@
+h2 Rewards:
+- unless @rewards.empty?
+  ul
+    - @rewards.each do |reward|
+      li
+        div = image_tag reward.image, size: "150x150" if reward.image.attached?
+        div
+          | Question:&nbsp;
+          = reward.question.title
+        div
+          | Reward:&nbsp;
+          = reward.title
+- else
+  p You don't have rewards

@@ -8,5 +8,12 @@ FactoryBot.define do
     trait :invalid do
       body { nil }
     end
+
+    trait :with_link do
+      after(:create) do |question|
+        create :link, linkable: question
+      end
+    end
+    
   end
 end
