@@ -10,6 +10,7 @@
             = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
     = render 'shared/links', resource: answer
+    = render 'shared/rating', resource: answer
 
     - if current_user&.is_author?(answer.question)
       - unless answer.best?

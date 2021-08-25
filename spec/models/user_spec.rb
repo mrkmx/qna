@@ -4,6 +4,7 @@ RSpec.describe User, type: :model do
   it { should have_many :questions }
   it { should have_many :answers }
   it { should have_many(:rewards).dependent(:nullify) }
+  it { should have_many :votes }
 
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
@@ -41,4 +42,16 @@ describe 'instance methods is_author?' do
       end
     end
   end
+end
+
+describe 'voted' do
+  let!(:questions) { create_list(:question, 2)}
+  let!(:user) { create(:user) }
+  let!(:vote) { create(:vote, user: user, votable: questions[0])}
+
+  it 'shows that the user has voted' do
+    expect(user.voted?(questions[0])).to be_truthy
+    expect(user.voted?(questions[1])).to be_falsey
+  end
+
 end
