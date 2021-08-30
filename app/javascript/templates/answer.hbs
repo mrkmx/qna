@@ -1,0 +1,15 @@
+<div class="answer card" id="answer-{{answer.id}}">
+  <p>{{answer.body}}</p>
+  <p>{{rating}}</p>
+
+  <div class="links-hbs">
+    {{#if links.length}}
+      <h3>Links: </h3>
+      <ul>
+        {{#each links}}
+          <li><a href="{{this.url}}">{{this.name}}</a></li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+</div>

@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :check_author, only: %i[update destroy]
   before_action :check_question_author, only: %i[best]
 
+  after_action :publish_answer, only: :create
+
   def new
     @answer = Answer.new
   end
@@ -53,4 +55,16 @@ class AnswersController < ApplicationController
     @question = @answer.question
     redirect_to @question, notice: 'Only author can do it' unless current_user.is_author?(@question)
   end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    ActionCable.server.broadcast(
+      "question_#{@question.id}",
+      answer: @answer,
+      rating: @answer.rating,
+      links: @answer.links
+    )
+  end
+  
 end
