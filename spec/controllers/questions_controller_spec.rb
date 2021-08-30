@@ -112,6 +112,10 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
       end
+
+      it 'broadcasts to the `questions` channel' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to broadcast_to('questions')
+      end
     end
 
     context 'with invalid attributes' do
@@ -125,6 +129,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+
+      it 'does not broadcast to the `questions` channel' do
+        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.not_to broadcast_to('questions')
       end
     end
 
