@@ -1,0 +1,11 @@
+$('.comment-errors').html('<%= render 'shared/errors', resource: @comment %>')
+
+<% if @comment.persisted? %>
+  <% if @comment.commentable.is_a?(Question) %>
+    $('.comments__question .comments-list').append('<%= j render 'comments/comment', comment: @comment %>');
+  <% else %>
+    $('.comments__answer .comments-list').append('<%= j render 'comments/comment', comment: @comment %>');
+  <% end %>
+  
+  $('.new-comment #comment_body').val('');
+<% end %>

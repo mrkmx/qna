@@ -5,6 +5,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:question) { create(:question, user: author) }
     let!(:voted) { create(:answer, question: question, user: author) }
   end
+  it_behaves_like 'commented'
   
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }

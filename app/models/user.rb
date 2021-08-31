@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :answers
   has_many :rewards, dependent: :nullify
   has_many :votes
+  has_many :comments, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
