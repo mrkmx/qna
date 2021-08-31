@@ -55,6 +55,39 @@ feature 'The user can leave a comment for the question or the answer', %q{
     end
   end
 
+  describe 'Multiple sessions' do
+    scenario 'with the comment appears on another page of the user' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.comments__question' do
+          fill_in 'Your comment', with: 'Broadcast question comment'
+          click_on 'Create comment'
+        end
+
+        within "#answer-block-#{answer.id}" do
+          fill_in 'Your comment', with: 'Broadcast answer comment'
+          click_on 'Create comment'
+        end
+
+        expect(page).to have_content 'Broadcast question comment'
+        expect(page).to have_content 'Broadcast answer comment'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Broadcast question comment'
+        expect(page).to have_content 'Broadcast answer comment'
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tries to leave a comment for the resource' do
     visit question_path(question)
 
