@@ -2,7 +2,17 @@
   = render 'shared/errors', resource: @question
 
 .question
-  = render @question
+  = render 'questions/inner', resource: @question
+
+.comments.comments__question
+  h3 Comments:
+  ul.comments-list
+    - unless @question.comments.empty?
+      = render 'comments/comments', commentable: @question, comments: @question.comments
+    - else
+      = 'No comments'
+  - if current_user
+    = render 'comments/form', commentable: @question, comment: @question.comments.build
 
 .answer-errors
   = render 'shared/errors', resource: @answer

@@ -30,20 +30,20 @@ feature 'User can choose the best answer of his question' do
       sign_in(question.user)
       visit question_path(question)
 
-      within "#answer-#{best_answer.id}.answer" do
+      within "#answer-block-#{best_answer.id}.answer" do
         expect(page).to have_content "It's the best answer"
       end
 
-      within "#answer-#{answer.id}.answer" do
+      within "#answer-block-#{answer.id}.answer" do
         expect(page).to have_link 'Best answer'
         click_on 'Best answer'
       end
 
-      within "#answer-#{best_answer.id}.answer" do
+      within "#answer-block-#{best_answer.id}.answer" do
         expect(page).to have_link 'Best answer'
       end
 
-      within "#answer-#{answer.id}.answer" do
+      within "#answer-block-#{answer.id}.answer" do
         expect(page).to have_content "It's the best answer"
       end
     end
@@ -52,7 +52,7 @@ feature 'User can choose the best answer of his question' do
       sign_in(question_owner.user)
       visit question_path(question_owner)
   
-      # within "#answer-#{answer.id}" do
+      # within "#answer-block-#{answer.id}" do
       click_on 'Best answer'
       # end
   
@@ -68,11 +68,11 @@ feature 'User can choose the best answer of his question' do
 
     answers = page.all('.answer')
 
-    expect(answers.first.native.attribute('id')).to eq "answer-#{best_answer.id}"
+    expect(answers.first.native.attribute('id')).to eq "answer-block-#{best_answer.id}"
 
     click_on 'Best answer'
 
-    expect(answers.first.native.attribute('id')).to eq "answer-#{answer.id + 1}"
+    expect(answers.first.native.attribute('id')).to eq "answer-block-#{answer.id + 1}"
   end
 
   scenario 'Unauthenticated user tries to choose the best answer' do

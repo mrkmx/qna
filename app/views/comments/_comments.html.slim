@@ -1,0 +1,6 @@
+- comments.each do |comment|
+  li id="comment_#{comment.id}"
+    p
+      = comment.body
+      | &nbsp;by&nbsp;
+      span=comment.user.email

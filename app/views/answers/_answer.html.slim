@@ -1,5 +1,5 @@
 - unless answer.errors.present?
-  div class="answer card" id="answer-#{answer.id}"
+  div class="answer card" id="answer-block-#{answer.id}"
     p= answer.body
 
     - if answer.files.attached?
@@ -21,6 +21,16 @@
     -if current_user&.is_author?(answer)
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+
+    .comments.comments__answer
+      h3 Comments:
+      ul.comments-list
+        - unless answer.comments.empty?
+          = render 'comments/comments', commentable: answer, comments: answer.comments
+        - else
+          = 'No comments'
+      - if current_user
+        = render 'comments/form', commentable: answer, comment: answer.comments.build
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
     = f.label :body, 'Your answer'

@@ -31,6 +31,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'slim-rails'
 gem 'devise'
 gem "cocoon"
+gem 'gon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -38,6 +39,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0.0'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
+  gem 'action-cable-testing'
 end
 
 group :development do

@@ -42,6 +42,35 @@ feature 'User can give an answer', %q{
     end
   end
 
+  describe 'Multiple sessions', js: true do
+    scenario 'with the answer appears on another page of the user' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your answer', with: 'My answer'
+
+        click_on 'Answer'
+
+        within '.answers' do
+          expect(page).to have_content 'My answer'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content 'My answer'
+        end
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tries to answers the question' do
     visit question_path(question)
     expect(page).to_not have_link 'Answer'

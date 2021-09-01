@@ -8,8 +8,12 @@ Rails.application.routes.draw do
     member { post :revote }
   end
 
-  resources :questions, concerns: [:votable] do
-    resources :answers, shallow: true, concerns: [:votable] do
+  concern :commented do
+    post :comment, on: :member
+  end
+
+  resources :questions, concerns: [:votable, :commented] do
+    resources :answers, shallow: true, concerns: [:votable, :commented] do
       patch :best, on: :member
     end
   end
@@ -17,5 +21,7 @@ Rails.application.routes.draw do
   resources :files, only: :destroy
 
   resources :rewards, only: :index
+
+  mount ActionCable.server => '/cable'
 
 end
