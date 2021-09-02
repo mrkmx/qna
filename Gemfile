@@ -30,6 +30,9 @@ gem "aws-sdk-s3", require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'slim-rails'
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
 gem "cocoon"
 gem 'gon'
 
