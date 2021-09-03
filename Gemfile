@@ -32,6 +32,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem "cocoon"
 gem 'gon'

@@ -6,48 +6,93 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Github' do
-    let(:oauth_data) { {'provider' => 'github', 'uid' => 123 } }
-
-    it 'finds user from oauth data' do
-      allow(request.env).to receive(:[]).and_call_original
-      allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
-      expect(User).to receive(:find_for_oauth).with(oauth_data)
-      get :github
+    before do
+      request.env['omniauth.auth'] = mock_auth_hash(
+        provider: :github,
+        email: 'user@github.com'
+      )
     end
 
-    context 'user exists' do
-      let!(:user) { create(:user) }
+    context 'when the user exists' do
+      let(:user) { create(:user, email: 'user@github.com') }
 
       before do
-        allow(User).to receive(:find_for_oauth).and_return(user)
+        create(:authorization, user: user)
+
         get :github
       end
 
-      it 'login user' do
-        expect(subject.current_user).to eq user
+      it 'logins the user' do
+        expect(controller.current_user).to eq(user)
       end
 
-
-      it 'redirects to root path' do
+      it 'redirects to the root path' do
         expect(response).to redirect_to root_path
       end
     end
 
-    context 'user does not exist' do
-      before do
-        allow(User).to receive(:find_for_oauth)
+    context 'when the user does not exists' do
+      it 'logins created user' do
         get :github
-      end
 
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
+        expect(controller.current_user.email).to eq('user@github.com')
       end
-
 
       it 'does not login user' do
-        expect(subject.current_user).to_not be
+        expect { get :github }.to change(User, :count).by(1)
+      end
+
+      it 'redirects to the root path' do
+        get :github
+
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
+
+  describe 'Facebook' do
+    before do
+      request.env['omniauth.auth'] = mock_auth_hash(
+        provider: :facebook,
+        email: 'user@facebook.com'
+      )
+    end
+
+    context 'when the user exists' do
+      let(:user) { create(:user, email: 'user@facebook.com') }
+
+      before do
+        create(:authorization, user: user)
+
+        get :facebook
+      end
+
+      it 'logins the user' do
+        expect(controller.current_user).to eq(user)
+      end
+
+      it 'redirects to the root path' do
+        expect(response).to redirect_to root_path
       end
     end
 
+    context 'when the user does not exists' do
+      it 'logins created user' do
+        get :facebook
+
+        expect(controller.current_user.email).to eq('user@facebook.com')
+      end
+
+      it 'does not login user' do
+        expect { get :facebook }.to change(User, :count).by(1)
+      end
+
+      it 'redirects to the root path' do
+        get :facebook
+
+        expect(response).to redirect_to root_path
+      end
+    end
   end
+
 end 

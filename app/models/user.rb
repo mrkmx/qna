@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github]
+         :omniauthable, omniauth_providers: %i[github facebook]
 
   def is_author?(resource)
     self.id == resource.user_id

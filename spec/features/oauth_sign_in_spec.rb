@@ -8,7 +8,7 @@ feature 'The user can sign in from provider', %q{
 
   describe 'Sign in with Github' do
     background do
-      mock_auth_hash(provider: :github, email: 'github@github.com')
+      mock_auth_hash(provider: :github, email: 'user@github.com')
 
       visit new_user_session_path
     end
@@ -20,7 +20,7 @@ feature 'The user can sign in from provider', %q{
     end
 
     context 'when the user already has authorization with GitHub' do
-      given(:user) { create(:user, email: 'github@github.com') }
+      given(:user) { create(:user, email: 'user@github.com') }
       given(:authorization) { create(:authorization, user: user) }
 
       scenario 'and tries to sign in' do
@@ -37,6 +37,39 @@ feature 'The user can sign in from provider', %q{
 
       expect(page).to have_content 'Could not authenticate you from GitHub because "Invalid credentials".'
     end
-
   end
+
+  describe 'Sign in with Facebook' do
+    background do
+      mock_auth_hash(provider: :facebook, email: 'user@facebook.com')
+
+      visit new_user_session_path
+    end
+
+    scenario 'when the guest tries to sign in' do
+      click_on 'Sign in with Facebook'
+
+      expect(page).to have_content 'Successfully authenticated from Facebook account.'
+    end
+
+    context 'when the user already has authorization with Facebook' do
+      given(:user) { create(:user, email: 'user@facebook.com') }
+      given(:authorization) { create(:authorization, user: user) }
+
+      scenario 'and tries to sign in' do
+        click_on 'Sign in with Facebook'
+
+        expect(page).to have_content 'Successfully authenticated from Facebook account.'
+      end
+    end
+
+    scenario 'when there is an authentication error occurs' do
+      OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
+
+      click_link 'Sign in with Facebook'
+
+      expect(page).to have_content 'Could not authenticate you from Facebook because "Invalid credentials".'
+    end
+  end
+
 end
