@@ -33,7 +33,9 @@ class Ability
       votable.user_id != user.id
     end
 
-    can :mark_as_best, Answer, question: { user_id: user.id }
+    can :best, Answer do |resource|
+      user.is_author?(resource.question)
+    end
 
     can :destroy, ActiveStorage::Attachment do |file|
       file.record.user_id == user.id

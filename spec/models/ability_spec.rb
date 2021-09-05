@@ -55,8 +55,8 @@ describe Ability, type: :model, aggregate_failures: true do
       it { is_expected.to be_able_to :vote_actions, other_user_answer }
       it { is_expected.not_to be_able_to :vote_actions, user_answer }
 
-      it { is_expected.to be_able_to :mark_as_best, user_answer }
-      it { is_expected.not_to be_able_to :mark_as_best, other_user_answer }
+      it { is_expected.to be_able_to :best, user_answer }
+      it { is_expected.not_to be_able_to :best, other_user_answer }
     end
 
     context 'with comments' do
