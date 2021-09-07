@@ -10,6 +10,9 @@ class AnswersController < ApplicationController
 
   after_action :publish_answer, only: :create
 
+  authorize_resource except: :comment
+  skip_authorization_check only: :comment
+
   def new
     @answer = Answer.new
   end
@@ -49,12 +52,12 @@ class AnswersController < ApplicationController
   end
 
   def check_author
-    redirect_to @answer.question, notice: 'Only author can do it' unless current_user.is_author?(@answer)
+    redirect_to @answer.question, notice: 'Only author can do it' unless can? [:update, :destroy], @answer
   end
 
   def check_question_author
     @question = @answer.question
-    redirect_to @question, notice: 'Only author can do it' unless current_user.is_author?(@question)
+    redirect_to @question, notice: 'Only author can do it' unless can? [:best], @question
   end
 
   def publish_answer
