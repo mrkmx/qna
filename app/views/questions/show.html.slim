@@ -11,7 +11,7 @@
       = render 'comments/comments', commentable: @question, comments: @question.comments
     - else
       = 'No comments'
-  - if current_user
+  - if can? :create, Comment
     = render 'comments/form', commentable: @question, comment: @question.comments.build
 
 .answer-errors

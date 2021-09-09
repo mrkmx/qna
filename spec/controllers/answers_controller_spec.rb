@@ -120,9 +120,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer Text'
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to answer.question
-      end
     end
 
     context 'for unauthenticated user' do
@@ -176,9 +173,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to_not be_best
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to answer.question
-      end
     end
 
     context 'for unauthenticated user' do
@@ -220,11 +214,6 @@ RSpec.describe AnswersController, type: :controller do
 
       it "don't delete the answer" do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
-      end
-
-      it 'redirects to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to answer.question
       end
     end
 

@@ -25,7 +25,9 @@ class Ability
     can :read, :all
 
     can :create, [Question, Answer, Comment]
-    can %i[update destroy], [Question, Answer], { user_id: user.id }
+
+    alias_action :update, :destroy, to: :modify
+    can :modify, [Question, Answer], { user_id: user.id }
 
     alias_action :vote, :revote, to: :vote_actions
 

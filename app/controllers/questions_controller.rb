@@ -4,9 +4,11 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy comment]
-  before_action :check_author, only: %i[update destroy]
 
   after_action :publish_question, only: %i[create destroy]
+
+  authorize_resource except: :comment
+  skip_authorization_check only: :comment
 
   def index
     @questions = Question.all
@@ -54,10 +56,6 @@ class QuestionsController < ApplicationController
                                      files: [],
                                      links_attributes: [:id, :name, :url, :_destroy],
                                      reward_attributes: [:title, :image])
-  end
-
-  def check_author
-    redirect_to @question, notice: 'You are not the author' unless current_user.is_author?(@question)
   end
 
   def publish_question
