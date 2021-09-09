@@ -10,7 +10,6 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
-
   describe 'instance methods is_author?' do
 
     describe '#is_author? will return the true' do

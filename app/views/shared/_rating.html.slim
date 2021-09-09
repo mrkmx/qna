@@ -1,7 +1,7 @@
 .rating id="#{resource.class.to_s.downcase}-#{resource.id}"
   .rating-counter
     = "#{resource.rating}"
-  - if !current_user&.is_author?(resource) && current_user
+  - if can? :vote_actions, resource
     .vote-links class="#{'hidden' if current_user&.voted?(resource)}"
       = link_to polymorphic_url(resource, action: :vote, voted: { value: 1 }), data: { type: :json }, method: :post, remote: true
         span.hidden Up

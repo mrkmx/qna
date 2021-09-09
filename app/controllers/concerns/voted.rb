@@ -6,20 +6,18 @@ module Voted
   end
 
   def vote
-    unless current_user.is_author?(@voted)
-      @voted.votes.create!(votes_params.merge(user: current_user))
+    authorize! :vote_actions, @voted
+    @voted.votes.create!(votes_params.merge(user: current_user))
 
-      render json: json_data
-    end
+    render json: json_data
   end
 
   def revote
-    unless current_user.is_author?(@voted)
-      vote = @voted.votes.where(user: current_user)
-      vote.destroy_all
+    authorize! :vote_actions, @voted
+    vote = @voted.votes.where(user: current_user)
+    vote.destroy_all
 
-      render json: json_data
-    end
+    render json: json_data
   end
 
   private

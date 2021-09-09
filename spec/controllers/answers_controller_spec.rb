@@ -67,44 +67,44 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-  context 'with valid attributes' do
-    before { login(user) }
+    context 'with valid attributes' do
+      before { login(user) }
 
-    it 'assigns the requested answer to @answer' do
-      patch :update, params: { id: answer,
-                               answer: attributes_for(:answer) }, format: :js
-      expect(assigns(:answer)).to eq answer
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer,
+                                answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'body' } }, format: :js
+        answer.reload
+
+        expect(answer.body).to eq 'body'
+      end
+
+      it 'renders update' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
+      end
     end
 
-    it 'changes answer attributes' do
-      patch :update, params: { id: answer, answer: { body: 'body' } }, format: :js
-      answer.reload
+    context 'with invalid attributes' do
+      before do
+        login(user)
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+      end
 
-      expect(answer.body).to eq 'body'
+      it 'does not change answer' do
+        answer.reload
+
+        expect(answer.body).to eq 'Answer Text'
+      end
+
+      it 'renders update' do
+        expect(response).to render_template :update
+      end
     end
-
-    it 'renders update' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
-      expect(response).to render_template :update
-    end
-  end
-
-  context 'with invalid attributes' do
-    before do
-      login(user)
-      patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-    end
-
-    it 'does not change answer' do
-      answer.reload
-
-      expect(answer.body).to eq 'Answer Text'
-    end
-
-    it 'renders update' do
-      expect(response).to render_template :update
-    end
-  end
 
     context 'for not the author of the answer' do
       let(:not_author) { create(:user) }
@@ -120,9 +120,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer Text'
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to answer.question
-      end
     end
 
     context 'for unauthenticated user' do
@@ -176,9 +173,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to_not be_best
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to answer.question
-      end
     end
 
     context 'for unauthenticated user' do
@@ -220,11 +214,6 @@ RSpec.describe AnswersController, type: :controller do
 
       it "don't delete the answer" do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
-      end
-
-      it 'redirects to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to answer.question
       end
     end
 

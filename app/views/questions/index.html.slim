@@ -1,4 +1,4 @@
-- if current_user
+- if can? :create, Question
   p= link_to 'Ask question', new_question_path
 
 .questions
