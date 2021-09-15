@@ -32,10 +32,6 @@ describe 'Answers API', type: :request do
 
       it 'returns all public fields' do
         %w[id body user_id created_at updated_at].each do |attr|
-          pp answer_response[attr]
-          p '==========='
-          pp answer.send(attr).as_json
-          p '==========='
           expect(answer_response[attr]).to eq(answer.send(attr).as_json)
         end
       end
