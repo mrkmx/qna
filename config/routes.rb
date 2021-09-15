@@ -25,4 +25,16 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: %i[index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, shallow: true, except: %i[new] do
+        resources :answers, except: %i[new]
+      end
+    end
+  end
+
 end

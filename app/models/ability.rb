@@ -44,5 +44,7 @@ class Ability
     end
 
     can :destroy, Link, linkable: { user_id: user.id }
+
+    can :me, User, id: user.id
   end
 end
