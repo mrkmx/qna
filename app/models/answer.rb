@@ -15,11 +15,17 @@ class Answer < ApplicationRecord
 
   default_scope { order('best DESC, created_at') }
 
+  after_create :notify
+
   def mark_as_best
     transaction do
       question.answers.update_all(best: false)
       update!(best: true)
       question.reward&.update!(user: user)
     end
+  end
+
+  def notify
+    NewAnswerJob.perform_later(self)
   end
 end

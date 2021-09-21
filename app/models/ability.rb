@@ -24,7 +24,8 @@ class Ability
   def user_abilities(user)
     can :read, :all
 
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
+    can :destroy, [Subscription]
 
     alias_action :update, :destroy, to: :modify
     can :modify, [Question, Answer], { user_id: user.id }

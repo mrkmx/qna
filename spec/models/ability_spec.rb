@@ -76,6 +76,9 @@ describe Ability, type: :model, aggregate_failures: true do
       end
     end
 
-    
+    context 'Subscription' do
+      it { is_expected.to be_able_to :create, Subscription }
+      it { is_expected.to be_able_to :destroy, Subscription }
+    end
   end
 end
