@@ -31,6 +31,11 @@
     = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
   
   = f.submit 'Answer'
+.subscribe
+  - if @question.subscribed?(current_user)
+    = link_to 'Unsubscribe', subscription_path(@subscription), method: :delete
+  - else
+    = link_to 'Subscribe', subscriptions_path(@question), method: :post
 
 h3= 'Answers:'
 

@@ -1,0 +1,6 @@
+h1 = "New answer for your question '#{@question.body}'"
+hr
+p
+  = link_to @answer.title.truncate(15), url_for(@question)
+p = "#{@owner.email} responded:"
+p = @answer.title
