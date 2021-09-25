@@ -1,0 +1,13 @@
+li
+  p
+    b
+      = 'Author of the answer: '
+    = result.user.email
+  p
+    = 'Answer body: '
+  = result.body
+
+  .p
+    b
+      = 'For question: '
+      = link_to result.question.title, result.question

@@ -1,0 +1,7 @@
+.search
+  = form_with scope: :search, url: search_path, method: :get, local: true, class: 'form-inline' do |f|
+    .input-group
+      = f.select :scope, options_for_select(['Select category'] + QuerySearch::SEARCH_SCOPES), {}, { class: 'btn' }
+      = f.text_field :query, required: true, class: 'form-control', placeholder: 'Search'
+    .input-group-append
+      = f.submit 'Search', class: 'btn'

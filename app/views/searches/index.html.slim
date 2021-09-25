@@ -1,0 +1,6 @@
+.search-results
+  p
+    | Found #{@search_results.count} search results:
+  ul
+  - @search_results.each do |result|
+    = render result.class.to_s.downcase, result: result
